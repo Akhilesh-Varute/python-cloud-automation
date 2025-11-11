@@ -1,0 +1,189 @@
+# 🧠 Day 2 – Manual ETL vs Pandas ETL
+
+---
+
+## 🎯 Goal
+
+Understand how to extract, transform, and load (ETL) structured data manually with core Python, then refactor the same workflow using **pandas** to achieve cleaner, faster, and more maintainable code.
+
+---
+
+## 🧩 Part A – Manual File Handling ETL (Pre-pandas)
+
+### **Objective**
+
+Learn what ETL means by manually reading CSV & JSON, transforming the data, writing it back, and logging each step.
+
+### **Core Concepts**
+
+| Concept                         | Library            | Purpose                |
+| ------------------------------- | ------------------ | ---------------------- |
+| `csv.DictReader`, `json.load()` | Built-ins          | Parse structured files |
+| `os`, `pathlib`                 | File system safety | Relative paths         |
+| Custom `logger.py`              | `logging`          | Standardized logs      |
+| List comprehension              | Python core        | Transform records      |
+
+### **Simplified Flow**
+
+1. **Extract** → Read `users.csv` and `sales.json`.
+2. **Transform** → Add a new list of records with mock `sales_count = len(sales)` for each user.
+3. **Load** → Write to `data/output/transformed_data.csv`.
+4. **Log** → Write progress to `logs/app.log`.
+
+### **Key Takeaways**
+
+* You saw what “raw” ETL code looks like (file I/O, loops, error handling).
+* Great for understanding I/O flow, but verbose and fragile for real data.
+* Every transformation had to be written manually.
+
+---
+
+## 🧩 Part B – Pandas ETL Implementation (Actual Day 2 Task)
+
+### **Objective**
+
+Use `pandas` to handle the same ETL workflow declaratively and vectorized.
+
+### **Pipeline**
+
+1. **Extract**
+
+   ```python
+   df = pd.read_csv(input_path)
+   ```
+2. **Transform**
+
+   ```python
+   df["full_name"] = df["first_name"].str.strip() + " " + df["last_name"].str.strip()
+   df.loc[df["department"] == "Engineering", "salary"] *= 1.10
+   df = df.dropna()
+   df["updated_at"] = pd.Timestamp.now()
+   ```
+3. **Load**
+
+   ```python
+   df.to_json(output_path, orient="records", indent=4)
+   ```
+4. **Verify**
+
+   ```python
+   pd.read_json(output_path)
+   ```
+
+### **Result Summary**
+
+| Before Cleaning | After Cleaning | File Written To                     |
+| --------------- | -------------- | ----------------------------------- |
+| 5 rows          | 4 rows         | `data/output/employees_output.json` |
+
+### **Benefits Observed**
+
+| Manual Approach              | Pandas Approach                 |
+| ---------------------------- | ------------------------------- |
+| Custom read/write functions  | Built-in `read_csv` / `to_json` |
+| Row-by-row loops             | Vectorized operations           |
+| Manual type handling         | Automatic type inference        |
+| Explicit string manipulation | `.str` accessor                 |
+| Slow for large data          | Optimized C-level execution     |
+| Multiple lines of code       | Few declarative statements      |
+
+---
+
+## ⚙️ Technical Details (Shared Infrastructure)
+
+### Folder Structure
+
+```
+Day2_File_Operations_CSV_JSON_Handling/
+│
+├── etl_scripts/
+│   ├── file_handler.py        # manual ETL utilities
+│   ├── main_etl.py            # manual ETL runner
+│   ├── etl_employees.py       # pandas ETL script
+│
+├── utils/
+│   └── logger.py              # shared logger
+│
+├── data/
+│   ├── input/
+│   │   ├── users.csv
+│   │   ├── sales.json
+│   │   └── employees.csv
+│   └── output/
+│       ├── transformed_data.csv
+│       └── employees_output.json
+│
+└── logs/
+    └── app.log
+```
+
+---
+
+## 🧠 Comparison & Learning Highlights
+
+| Category            | Manual ETL (Pre-pandas)      | Pandas ETL                          |
+| ------------------- | ---------------------------- | ----------------------------------- |
+| **Ease of Coding**  | Verbose; loops & try/except  | Compact vectorized syntax           |
+| **Performance**     | Pure Python looping → slow   | C-optimized vectorization           |
+| **Maintainability** | Hard to extend               | Easy to add new columns/filters     |
+| **Scalability**     | Suitable only for tiny files | Handles millions of rows            |
+| **Readability**     | Low – imperative             | High – declarative                  |
+| **Logging**         | Manual                       | Still integrated via shared logger  |
+| **Lesson Learned**  | Foundation of ETL            | Modern data transformation workflow |
+
+---
+
+## 🧾 Outcome
+
+You built two versions of the same ETL process:
+
+1. **Manual Core-Python ETL** → learned how ETL works internally.
+2. **Pandas ETL** → learned how to do the same thing correctly and efficiently.
+
+You now understand **what pandas is abstracting** and **why every data engineer uses it.**
+
+---
+
+## 🪵 Log Example
+
+```
+2025-11-11 12:12:25 - INFO - Reading input CSV...
+2025-11-11 12:12:25 - INFO - Initial row count: 5
+2025-11-11 12:12:25 - INFO - Row count after cleaning: 4
+2025-11-11 12:12:25 - INFO - Wrote cleaned data to employees_output.json
+```
+
+---
+
+## 🔮 Next Step – Day 3 Preview
+
+* Merge data sources with `pd.merge()`.
+* Aggregate metrics using `groupby()`.
+* Export multi-format outputs (CSV, JSON, Excel).
+* Integrate basic validation checks.
+
+---
+
+## ✅ Commit Message
+
+```
+docs: Day 2 – Manual ETL vs Pandas ETL comparison and learning summary
+```
+
+---
+
+## 🗒 Notion Layout Suggestion
+
+| Section                   | Content                                                                                               |
+| ------------------------- | ----------------------------------------------------------------------------------------------------- |
+| **Title**                 | Day 2 – Manual ETL vs Pandas ETL                                                                      |
+| **Goal**                  | Understand ETL fundamentals by building a manual pipeline, then optimize with pandas.                 |
+| **Manual ETL Highlights** | File I/O, loops, logging, CSV/JSON modules                                                            |
+| **Pandas ETL Highlights** | `read_csv`, `loc`, `dropna`, `to_json`, timestamp                                                     |
+| **Comparison Table**      | (copy from above)                                                                                     |
+| **Key Takeaway**          | Pandas abstracts away low-level file handling and loops into expressive, high-performance operations. |
+| **Next Focus**            | Groupby and merging data sets for aggregations.                                                       |
+
+---
+
+This combined doc shows your growth curve: from *manual control* to *data-engineering maturity*.

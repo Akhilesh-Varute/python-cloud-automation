@@ -1,0 +1,38 @@
+[
+    {
+        "id":1,
+        "first_name":"Akhil",
+        "last_name":"Patil",
+        "department":"Engineering",
+        "salary":88000.0,
+        "full_name":"Akhil Patil",
+        "updated_at":1762876408
+    },
+    {
+        "id":2,
+        "first_name":"Ravi",
+        "last_name":"Sharma",
+        "department":"Sales",
+        "salary":55000.0,
+        "full_name":"Ravi Sharma",
+        "updated_at":1762876408
+    },
+    {
+        "id":3,
+        "first_name":"Sneha",
+        "last_name":"Desai",
+        "department":"Engineering",
+        "salary":101200.0,
+        "full_name":"Sneha Desai",
+        "updated_at":1762876408
+    },
+    {
+        "id":5,
+        "first_name":"Anjali",
+        "last_name":"Joshi",
+        "department":"Engineering",
+        "salary":82500.0,
+        "full_name":"Anjali Joshi",
+        "updated_at":1762876408
+    }
+]
