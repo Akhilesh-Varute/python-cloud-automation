@@ -1,0 +1,15 @@
+# Day3 — APIs (Requests + FastAPI)
+
+## What this folder contains
+- `api_transform.py` — FastAPI app with:
+  - `GET /health` — health check
+  - `GET /demo` — sample output list
+  - `POST /transform` — main endpoint (body: `{"name", "score"}`), accepts query param `threshold`
+- `client_post.py` — a small client that posts JSON to endpoints (keep for reference)
+
+## Quick start (dev)
+1. Create & activate venv:
+   ```bash
+   python -m venv .venv
+   source .venv/bin/activate   # or .venv\Scripts\activate on Windows
+   pip install -r requirements.txt
